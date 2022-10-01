@@ -154,10 +154,15 @@ def test():
     secret_word = load_word()
     print(secret_word)
     spaceman(secret_word)
+    
+# test()
+
 play_again = True
 while play_again == True:
-    test()
-    play_again_prompt = input("Would you likke to play again? Enter y / n > ")
+    letters_guessed = ''
+    secret_word = load_word()
+    spaceman(secret_word)
+    play_again_prompt = input("Would you like to play again? Enter y / n > ")
     while play_again_prompt.lower() != 'y' and play_again_prompt.lower() != 'n':
         play_again_prompt = input("Invalid input. Would you likke to play again? Enter y / n > ")
     if play_again_prompt == 'y':
