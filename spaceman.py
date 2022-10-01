@@ -8,7 +8,7 @@ def load_word():
     Returns: 
            string: The secret word to be used in the spaceman guessing game
     '''
-    f = open('words.txt', 'r')
+    f = open('./words.txt', 'r')
     words_list = f.readlines()
     f.close()
     words_list = words_list[0].split(' ')
@@ -68,6 +68,7 @@ def is_guess_in_word(guess, secret_word):
     #TODO: check if the letter guess is in the secret word
 
     # pass
+    print(f"Debug - in is_guess_in_word function - guessed letter: {guess}")
     for character in range(len(secret_word)):
         if secret_word[character] == guess:
             return True
@@ -84,6 +85,7 @@ def get_guess(letters_guessed):
             guess = input("You've already guessed that letter.  Please enter a new guess > ")
         else:
             guess_check = True
+    print(f"Debug - in get_guess function - guessed letter: {guess}")
     return guess        
 
 def spaceman(secret_word):
@@ -92,11 +94,28 @@ def spaceman(secret_word):
     Args:
       secret_word (string): the secret word to guess.
     '''
-    incorrect_gusses = 0
-
-
+    incorrect_guesses = 0
+    # set incorrect guesses to 7 to start, will add in difficulty selection to make this dynamic
+    max_incorrect_guesses = 7
+    guess = ''
     letters_guessed = '_' * len(secret_word)
-    print (letters_guessed)
+
+    while incorrect_guesses < max_incorrect_guesses:
+        print (f'Letters guessed: {letters_guessed}')
+        guess = get_guess(letters_guessed)
+        print(f"Debug - spaceman body function - guessed letter: {guess}")
+        get_guessed_word(secret_word, letters_guessed, guess)
+        if is_guess_in_word(guess, secret_word) == True:
+            print(f"Your guess [ {guess} ] was correct!")
+        else:
+            incorrect_guesses += 1
+            print(f"Your guess [ {guess} ] was not correct!  You have {max_incorrect_guesses - incorrect_guesses} incorrect remaining.")
+        if is_word_guessed(secret_word, letters_guessed) == True:
+            print(f"You've guessed the word!  It was {secret_word}!")
+            break
+    if incorrect_guesses == max_incorrect_guesses:
+        print(f"Sorry, you've made {max_incorrect_guesses} incorrect guesses and the game is over.  The secret word was {secret_word}")
+            
 
     #TODO: show the player information about the game according to the project spec
 
@@ -116,10 +135,13 @@ def spaceman(secret_word):
 # test pen-----------------------------------
 
 def test():
+    teststring = 'abcdef'
+    print(teststring[2])
     letters_guessed = ''
     secret_word = load_word()
     print(secret_word)
     spaceman(secret_word)
+
 
 test()
 
@@ -137,3 +159,4 @@ test()
 
 # Good luck!
 #     """)
+
