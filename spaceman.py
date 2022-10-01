@@ -68,12 +68,12 @@ def is_guess_in_word(guess, secret_word):
 
     # pass
     #print(f"Debug - in is_guess_in_word function - guessed letter: {guess}")
-    print(f"Debug in IGIW function- value of guess received in is_guess_in_word function: [ {guess} ]")
-    print(f"Debug - secret word: {secret_word}")
+    #print(f"Debug in IGIW function- value of guess received in is_guess_in_word function: [ {guess} ]")
+    #print(f"Debug - secret word: {secret_word}")
     character = 0
     is_in_word = False
     for character in range(len(secret_word)):
-        print(f"index: {character}, secret_word character at index: {secret_word[character]}")
+        #print(f"DEBUG index: {character}, secret_word character at index: {secret_word[character]}")
         if secret_word[character] == guess:
             is_in_word = True
             return is_in_word
@@ -89,7 +89,15 @@ def get_guess(letters_guessed):
         else:
             guess_check = True
     #print(f"Debug - in get_guess function - guessed letter: {guess}")
-    return guess        
+    return guess
+
+# function to convert array of letters_guessed to a string for output aesthetics
+
+def compress_string(letters_guessed):
+    compressed_string = ''
+    for letter in letters_guessed:
+        compressed_string += letter
+    return compressed_string
 
 def spaceman(secret_word):
     '''
@@ -107,18 +115,18 @@ def spaceman(secret_word):
         letters_guessed.append('_')
 
     while incorrect_guesses < max_incorrect_guesses:
-        print (f'Letters guessed: {letters_guessed}')
+        print (f'Letters guessed: {compress_string(letters_guessed)}')
         guess = get_guess(letters_guessed)
         #print(f"Debug - spaceman body function - guessed letter: {guess}")
         get_guessed_word(secret_word, letters_guessed, guess)
-        print(f"Debug - returned from function is_guess_in_word: {is_guess_in_word(guess, secret_word)}")
+        #print(f"Debug - returned from function is_guess_in_word: {is_guess_in_word(guess, secret_word)}")
         if is_guess_in_word(guess, secret_word) == True:
             print(f"Your guess [ {guess} ] was correct!")
         else:
             incorrect_guesses += 1
             print(f"Your guess [ {guess} ] was not correct!  You have {max_incorrect_guesses - incorrect_guesses} incorrect remaining.")
         if is_word_guessed(secret_word, letters_guessed) == True:
-            print(f"You've guessed the word!  It was {secret_word}!")
+            print(f"You've guessed the word!  It was '{secret_word}'!")
             break
     if incorrect_guesses == max_incorrect_guesses:
         print(f"Sorry, you've made {max_incorrect_guesses} incorrect guesses and the game is over.  The secret word was {secret_word}")
@@ -146,10 +154,17 @@ def test():
     secret_word = load_word()
     print(secret_word)
     spaceman(secret_word)
-
-
-test()
-
+play_again = True
+while play_again == True:
+    test()
+    play_again_prompt = input("Would you likke to play again? Enter y / n > ")
+    while play_again_prompt.lower() != 'y' and play_again_prompt.lower() != 'n':
+        play_again_prompt = input("Invalid input. Would you likke to play again? Enter y / n > ")
+    if play_again_prompt == 'y':
+        play_again = True
+    else:
+        play_again = False
+print("Thanks for playing!")
 #-------------------------------------------
 #These function calls that will start the game
 
