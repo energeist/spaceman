@@ -94,11 +94,16 @@ def spaceman(secret_word):
     Args:
       secret_word (string): the secret word to guess.
     '''
+    # initializing variables
     incorrect_guesses = 0
     # set incorrect guesses to 7 to start, will add in difficulty selection to make this dynamic
     max_incorrect_guesses = 7
     guess = ''
-    letters_guessed = '_' * len(secret_word)
+    letters_guessed = []
+    for letter in range((len(secret_word))):
+        print(letter)
+        letters_guessed.append('_')
+        print(letters_guessed)
 
     while incorrect_guesses < max_incorrect_guesses:
         print (f'Letters guessed: {letters_guessed}')
@@ -135,8 +140,6 @@ def spaceman(secret_word):
 # test pen-----------------------------------
 
 def test():
-    teststring = 'abcdef'
-    print(teststring[2])
     letters_guessed = ''
     secret_word = load_word()
     print(secret_word)
