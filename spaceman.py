@@ -1,4 +1,5 @@
 import random
+import re
 
 def load_word():
     '''
@@ -10,8 +11,7 @@ def load_word():
     f = open('words.txt', 'r')
     words_list = f.readlines()
     f.close()
-    
-    words_list = words_list[0].split(' ') #comment this line out if you use a words.txt file with each word on a new line
+    words_list = words_list[0].split(' ')
     secret_word = random.choice(words_list)
     return secret_word
 
@@ -25,9 +25,17 @@ def is_word_guessed(secret_word, letters_guessed):
         bool: True only if all the letters of secret_word are in letters_guessed, False otherwise
     '''
     # TODO: Loop through the letters in the secret_word and check if a letter is not in lettersGuessed
-    pass
+    # pass
+    total_guessed_letters = 0
+    for letter in range(len(secret_word)):
+        if secret_word[letter] in letters_guessed:
+            total_guessed_letters += 1
+    if total_guessed_letters == len(secret_word):
+        return True
+    else:
+        return False
 
-def get_guessed_word(secret_word, letters_guessed):
+def get_guessed_word(secret_word, letters_guessed, guess):
     '''
     A function that is used to get a string showing the letters guessed so far in the secret word and underscores for letters that have not been guessed yet.
     Args: 
@@ -39,7 +47,13 @@ def get_guessed_word(secret_word, letters_guessed):
 
     #TODO: Loop through the letters in secret word and build a string that shows the letters that have been guessed correctly so far that are saved in letters_guessed and underscores for the letters that have not been guessed yet
 
-    pass
+    # pass
+    for character in range(len(secret_word)):
+        if secret_word[character] == guess:
+            letters_guessed[character] = guess
+    print(letters_guessed)
+    return letters_guessed
+
 
 
 def is_guess_in_word(guess, secret_word):
@@ -53,10 +67,24 @@ def is_guess_in_word(guess, secret_word):
     '''
     #TODO: check if the letter guess is in the secret word
 
-    pass
+    # pass
+    for character in range(len(secret_word)):
+        if secret_word[character] == guess:
+            return True
+        else:
+            return False
 
-
-
+def get_guess(letters_guessed):
+    guess_check = False
+    guess = input("Please enter a single letter as your guess > ")
+    while guess_check == False:
+        if len(guess) != 1 or not re.match("^[a-zA-z]+$", guess):
+            guess = input("That was not a valid alphabetic character or you entered more than one character.  Please enter a new guess > ")
+        elif guess in letters_guessed:
+            guess = input("You've already guessed that letter.  Please enter a new guess > ")
+        else:
+            guess_check = True
+    return guess        
 
 def spaceman(secret_word):
     '''
@@ -82,5 +110,9 @@ def spaceman(secret_word):
 
 
 #These function calls that will start the game
+letters_guessed = ''
 secret_word = load_word()
-spaceman(secret_word)
+print(secret_word)
+get_guess(letters_guessed)
+# spaceman(secret_word)
+
