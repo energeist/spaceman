@@ -51,7 +51,6 @@ def get_guessed_word(secret_word, letters_guessed, guess):
     for character in range(len(secret_word)):
         if secret_word[character] == guess:
             letters_guessed[character] = guess
-    print(letters_guessed)
     return letters_guessed
 
 
@@ -68,12 +67,16 @@ def is_guess_in_word(guess, secret_word):
     #TODO: check if the letter guess is in the secret word
 
     # pass
-    print(f"Debug - in is_guess_in_word function - guessed letter: {guess}")
+    #print(f"Debug - in is_guess_in_word function - guessed letter: {guess}")
+    print(f"Debug in IGIW function- value of guess received in is_guess_in_word function: [ {guess} ]")
+    print(f"Debug - secret word: {secret_word}")
+    character = 0
+    is_in_word = False
     for character in range(len(secret_word)):
+        print(f"index: {character}, secret_word character at index: {secret_word[character]}")
         if secret_word[character] == guess:
-            return True
-        else:
-            return False
+            is_in_word = True
+            return is_in_word
 
 def get_guess(letters_guessed):
     guess_check = False
@@ -85,7 +88,7 @@ def get_guess(letters_guessed):
             guess = input("You've already guessed that letter.  Please enter a new guess > ")
         else:
             guess_check = True
-    print(f"Debug - in get_guess function - guessed letter: {guess}")
+    #print(f"Debug - in get_guess function - guessed letter: {guess}")
     return guess        
 
 def spaceman(secret_word):
@@ -101,15 +104,14 @@ def spaceman(secret_word):
     guess = ''
     letters_guessed = []
     for letter in range((len(secret_word))):
-        print(letter)
         letters_guessed.append('_')
-        print(letters_guessed)
 
     while incorrect_guesses < max_incorrect_guesses:
         print (f'Letters guessed: {letters_guessed}')
         guess = get_guess(letters_guessed)
-        print(f"Debug - spaceman body function - guessed letter: {guess}")
+        #print(f"Debug - spaceman body function - guessed letter: {guess}")
         get_guessed_word(secret_word, letters_guessed, guess)
+        print(f"Debug - returned from function is_guess_in_word: {is_guess_in_word(guess, secret_word)}")
         if is_guess_in_word(guess, secret_word) == True:
             print(f"Your guess [ {guess} ] was correct!")
         else:
