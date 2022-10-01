@@ -92,7 +92,11 @@ def spaceman(secret_word):
     Args:
       secret_word (string): the secret word to guess.
     '''
+    incorrect_gusses = 0
 
+
+    letters_guessed = '_' * len(secret_word)
+    print (letters_guessed)
 
     #TODO: show the player information about the game according to the project spec
 
@@ -109,10 +113,27 @@ def spaceman(secret_word):
 
 
 
-#These function calls that will start the game
-letters_guessed = ''
-secret_word = load_word()
-print(secret_word)
-get_guess(letters_guessed)
-# spaceman(secret_word)
+# test pen-----------------------------------
 
+def test():
+    letters_guessed = ''
+    secret_word = load_word()
+    print(secret_word)
+    spaceman(secret_word)
+
+test()
+
+#-------------------------------------------
+#These function calls that will start the game
+
+# get_guess(letters_guessed)
+
+#     print("""
+# Welcome to my Spaceman game!
+
+# Rules:
+
+# The system will choose a random word from a dictionary.  The player will select a letter to guess from the secret word until the whole word has been revealed, or the player has 7 incorrect guesses.
+
+# Good luck!
+#     """)
