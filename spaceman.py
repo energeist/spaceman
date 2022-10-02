@@ -5,9 +5,7 @@ from os import system
 
 def load_word():
 
-    # A function that reads a text file of words and randomly selects one to use as the secret word from the list.
-    # Returns: 
-    #   string: The secret word to be used in the spaceman guessing game
+# A function that reads a text file of words and randomly selects one to use as the secret word from the list.
 
     f = open('./words.txt', 'r')
     words_list = f.readlines()
@@ -18,15 +16,8 @@ def load_word():
 
 def is_word_guessed(secret_word, letters_guessed):
 
-    # A function that checks if all the letters of the secret word have been guessed.
-    # Args:
-    #     secret_word (string): the random word the user is trying to guess.
-    #     letters_guessed (list of strings): list of letters that have been guessed so far.
-    # Returns: 
-    #     bool: True only if all the letters of secret_word are in letters_guessed, False otherwise
+# A function that checks if all the letters of the secret word have been guessed.
 
-    # TODO: Loop through the letters in the secret_word and check if a letter is not in lettersGuessed
-    # pass
     total_guessed_letters = 0
     for letter in range(len(secret_word)):
         if secret_word[letter] in letters_guessed:
@@ -38,33 +29,16 @@ def is_word_guessed(secret_word, letters_guessed):
 
 def get_guessed_word(secret_word, letters_guessed, guess):
 
-    # A function that is used to get a string showing the letters guessed so far in the secret word and underscores for letters that have not been guessed yet.
-    # Args: 
-    #     secret_word (string): the random word the user is trying to guess.
-    #     letters_guessed (list of strings): list of letters that have been guessed so far.
-    # Returns: 
-    #     string: letters and underscores.  For letters in the word that the user has guessed correctly, the string should contain the letter at the correct position.  For letters in the word that the user has not yet guessed, shown an _ (underscore) instead.
-
-
-    #TODO: Loop through the letters in secret word and build a string that shows the letters that have been guessed correctly so far that are saved in letters_guessed and underscores for the letters that have not been guessed yet
+# A function that is used to get a string showing the letters guessed so far in the secret word and underscores for letters that have not been guessed yet.
 
     for character in range(len(secret_word)):
         if secret_word[character] == guess:
             letters_guessed[character] = guess
     return letters_guessed
 
-
-
 def is_guess_in_word(guess, secret_word):
 
-    # A function to check if the guessed letter is in the secret word
-    # Args:
-    #     guess (string): The letter the player guessed this round
-    #     secret_word (string): The secret word
-    # Returns:
-    #     bool: True if the guess is in the secret_word, False otherwise
-
-    #TODO: check if the letter guess is in the secret word
+# A function to check if the guessed letter is in the secret word
 
     character = 0
     is_in_word = False
@@ -91,24 +65,59 @@ def get_guess(letters_guessed, remaining_letters):
             guess_check = True
     return guess.lower()
 
+def compress_string(letters_guessed):
+
 # function to convert array of letters_guessed to a string for output aesthetics
 
-def compress_string(letters_guessed):
     compressed_string = ''
     for letter in letters_guessed:
         compressed_string += letter
     return compressed_string
 
+def difficulty():
+
+# function to get a difficulty setting from the player
+    difficulty_check = False
+    max_incorrect_guesses = 7
+    print("""
+Please choose a difficulty level (1 - 4):
+1 - \33[32mEasy\33[0m - 7 maximum incorrect guesses
+2 - \033[36mNormal\33[0m - 5 maximum incorrect guesses
+3 - \33[33mHard\33[0m - 4 maximum incorrect guesses
+4 - \33[31mNIGHTMARE\33[0m - 3 maximum incorrect guesses
+""")
+    while difficulty_check == False:
+        difficulty = input("Enter your difficulty choice > ")
+        match difficulty:
+            case '1':
+                max_incorrect_guesses = 7
+                difficulty_check = True
+                print("You have chosen: \33[32mEasy\33[0m - 7 maximum incorrect guesses")
+                break
+            case '2':
+                max_incorrect_guesses = 5
+                difficulty_check = True
+                print("You have chosen: \033[36mNormal\33[0m - 5 maximum incorrect guesses")
+                break
+            case '3':
+                max_incorrect_guesses = 4
+                difficulty_check = True
+                print("You have chosen: \33[33mHard\33[0m - 4 maximum incorrect guesses")
+                break
+            case '4':
+                max_incorrect_guesses = 3
+                difficulty_check = True
+                print("You have chosen: \33[31mNIGHTMARE\33[0m - 3 maximum incorrect guesses")
+                break
+    print()       
+    return max_incorrect_guesses
+
 def spaceman(secret_word, total_score):
 
-    # A function that controls the game of spaceman. Will start spaceman in the command line.
-    # Args:
-    #   secret_word (string): the secret word to guess.
-
+# A function that controls the game of spaceman. Will start spaceman in the command line.
 
     # initializing variables
     incorrect_guesses = 0
-    # set incorrect guesses to 7 to start, will add in difficulty selection to make this dynamic
     max_incorrect_guesses = 7
     guess = ''
     letters_guessed = []
@@ -122,6 +131,7 @@ def spaceman(secret_word, total_score):
     for character in secret_word:
         letters_guessed.append('_')
 
+    max_incorrect_guesses = difficulty()
     print(f"The secret word is {len(secret_word)} characters long.")
 
     while incorrect_guesses < max_incorrect_guesses:
@@ -135,36 +145,21 @@ def spaceman(secret_word, total_score):
         if is_guess_in_word(guess, secret_word) == True:
             print(f"Your guess [ {guess} ] was \33[32mcorrect\33[0m!")
             if is_word_guessed(secret_word, letters_guessed) == True:
+                print()
                 print(f"\33[32mYou've guessed the secret word!\33[0m  It was '{secret_word}'!")
+                print()
                 total_score[0] += 1
                 break
         else:
             incorrect_guesses += 1
             if incorrect_guesses == max_incorrect_guesses:
-                print(f"Sorry, you've made \33[31m{max_incorrect_guesses} incorrect guesses\33[0m! and the game is over.  The secret word was '{secret_word}'")
+                print()
+                print(f"Sorry, you've made \33[31m{max_incorrect_guesses} incorrect guesses and the game is over\33[0m.  The secret word was '\33[31m{secret_word}\33[0m'")
                 print()
                 total_score[1] += 1
             else:
                 print(f"Your guess [ {guess} ] was \33[31mnot correct\33[0m!  You have {max_incorrect_guesses - incorrect_guesses} incorrect remaining.")
     return total_score
-
-
-            
-
-    #TODO: show the player information about the game according to the project spec
-
-    #TODO: Ask the player to guess one letter per round and check that it is only one letter
-
-    #TODO: Check if the guessed letter is in the secret or not and give the player feedback
-
-    #TODO: show the guessed word so far
-
-    #TODO: check if the game has been won or lost
-
-
-
-
-
 
 # test pen-----------------------------------
 
@@ -178,6 +173,11 @@ def test():
 
 #-------------------------------------------
 
+# Program execution starts here
+
+sleep(1.5)
+system('clear')
+
 # Preamble text with rules
 
 print("""
@@ -187,13 +187,12 @@ Rules:
 
 The system will choose a random secret word from a dictionary. The player will select a letter to guess from the secret word until the whole word has been revealed, or the player has 7 incorrect guesses.
 
-Good luck!
-""")
-
-# These function calls that will start and loop the game until the player is done
+Good luck!""")
 
 play_again = True
 total_score = [0, 0]
+
+# These function calls that will start and loop the game until the player is done
 
 while play_again == True:
     letters_guessed = ''
@@ -206,8 +205,6 @@ while play_again == True:
         play_again = True
     else:
         play_again = False
-    sleep(1.5)
-    system('clear')
 print(f"Thanks for playing! Your final score was \33[32m{total_score[0]} wins\33[0m and \33[31m{total_score[1]} losses\33[0m.")
 
 
