@@ -158,7 +158,7 @@ def spaceman(secret_word, total_score):
                 print()
                 total_score[1] += 1
             else:
-                print(f"Your guess [ {guess} ] was \33[31mnot correct\33[0m!  You have {max_incorrect_guesses - incorrect_guesses} incorrect remaining.")
+                print(f"Your guess [ {guess} ] was \33[31mnot correct\33[0m!  You have {max_incorrect_guesses - incorrect_guesses} incorrect guesses remaining.")
     return total_score
 
 # test pen-----------------------------------
