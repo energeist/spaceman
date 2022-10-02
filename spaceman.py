@@ -146,7 +146,7 @@ def spaceman(secret_word, total_score):
             print(f"Your guess [ {guess} ] was \33[32mcorrect\33[0m!")
             if is_word_guessed(secret_word, letters_guessed) == True:
                 print()
-                print(f"\33[32mYou've guessed the secret word!\33[0m  It was '{secret_word}'!")
+                print(f"\33[32mYou've guessed the secret word!\33[0m The secret word was '\33[32m{secret_word}\33[0m'!")
                 print()
                 total_score[0] += 1
                 break
@@ -205,7 +205,9 @@ while play_again == True:
         play_again = True
     else:
         play_again = False
+print()
 print(f"Thanks for playing! Your final score was \33[32m{total_score[0]} wins\33[0m and \33[31m{total_score[1]} losses\33[0m.")
+print()
 
 
 
