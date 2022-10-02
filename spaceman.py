@@ -77,19 +77,19 @@ def get_guess(letters_guessed, remaining_letters):
     guess_check = False
     # sleep(3)
     # system('clear')
-    guess = input("Please enter a single letter as your guess > ")
+    guess = input(("Please enter a single letter as your guess > "))
     while guess_check == False:
         if len(guess) != 1 or not re.match("^[a-zA-z]+$", guess):
             # sleep(1)
             # system('clear')
             guess = input("That was not a valid alphabetic character or you entered more than one character.  Please enter a new guess > ")
-        elif guess not in remaining_letters:
+        elif guess.lower() not in remaining_letters:
             # sleep(1)
             # system('clear')
             guess = input(f"You've already guessed the letter [ {guess} ].  Please enter a new guess > ")
         else:
             guess_check = True
-    return guess
+    return guess.lower()
 
 # function to convert array of letters_guessed to a string for output aesthetics
 
@@ -121,24 +121,26 @@ def spaceman(secret_word):
         letters_guessed.append('_')
 
     while incorrect_guesses < max_incorrect_guesses:
-        print(f"Your guess progress: {compress_string(letters_guessed)}")
+        print(f"Letters guessed in the secret word: {compress_string(letters_guessed)}")
         print(f'Unguessed letters: {" ".join(remaining_letters)}')
         print()
-        # print (f'Letters guessed in the secret word: {compress_string(letters_guessed)}')
         guess = get_guess(letters_guessed, remaining_letters)
-        if guess in remaining_letters:
-            remaining_letters.pop(remaining_letters.index(guess))
+        if guess.lower() in remaining_letters:
+            remaining_letters.pop(remaining_letters.index(guess.lower()))
         get_guessed_word(secret_word, letters_guessed, guess)
         if is_guess_in_word(guess, secret_word) == True:
             print(f"Your guess [ {guess} ] was \33[32mcorrect\33[0m!")
+            if is_word_guessed(secret_word, letters_guessed) == True:
+                print(f"\33[32mYou've guessed the secret word!\33[0m  It was '{secret_word}'!")
+                break
         else:
             incorrect_guesses += 1
-            print(f"Your guess [ {guess} ] was \33[31mnot correct\33[0m!  You have {max_incorrect_guesses - incorrect_guesses} incorrect remaining.")
-        if is_word_guessed(secret_word, letters_guessed) == True:
-            print(f"You've guessed the word!  It was '{secret_word}'!")
-            break
-    if incorrect_guesses == max_incorrect_guesses:
-        print(f"Sorry, you've made {max_incorrect_guesses} incorrect guesses and the game is over.  The secret word was '{secret_word}'")
+            if incorrect_guesses == max_incorrect_guesses:
+                print(f"Sorry, you've made \33[31m{max_incorrect_guesses} incorrect guesses\33[0m! and the game is over.  The secret word was '{secret_word}'")
+            else:
+                print(f"Your guess [ {guess} ] was \33[31mnot correct\33[0m!  You have {max_incorrect_guesses - incorrect_guesses} incorrect remaining.")
+
+
             
 
     #TODO: show the player information about the game according to the project spec
