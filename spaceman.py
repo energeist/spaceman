@@ -1,5 +1,7 @@
 import random
 import re
+from time import sleep
+from os import system
 
 def load_word():
 
@@ -71,14 +73,20 @@ def is_guess_in_word(guess, secret_word):
             is_in_word = True
             return is_in_word
 
-def get_guess(letters_guessed):
+def get_guess(letters_guessed, remaining_letters):
     guess_check = False
+    # sleep(3)
+    # system('clear')
     guess = input("Please enter a single letter as your guess > ")
     while guess_check == False:
         if len(guess) != 1 or not re.match("^[a-zA-z]+$", guess):
+            # sleep(1)
+            # system('clear')
             guess = input("That was not a valid alphabetic character or you entered more than one character.  Please enter a new guess > ")
-        elif guess in letters_guessed:
-            guess = input("You've already guessed that letter.  Please enter a new guess > ")
+        elif guess not in remaining_letters:
+            # sleep(1)
+            # system('clear')
+            guess = input(f"You've already guessed the letter [ {guess} ].  Please enter a new guess > ")
         else:
             guess_check = True
     return guess
@@ -108,26 +116,29 @@ def spaceman(secret_word):
     alphabet = 'abcdefghijklmnopqrstuvwxyz'
     for letter in alphabet:
         remaining_letters.append(letter)
-    # print(remaining_letters)
-
 
     for character in secret_word:
         letters_guessed.append('_')
 
     while incorrect_guesses < max_incorrect_guesses:
-        print (f'Letters guessed: {compress_string(letters_guessed)}')
-        guess = get_guess(letters_guessed)
+        print(f"Your guess progress: {compress_string(letters_guessed)}")
+        print(f'Unguessed letters: {" ".join(remaining_letters)}')
+        print()
+        # print (f'Letters guessed in the secret word: {compress_string(letters_guessed)}')
+        guess = get_guess(letters_guessed, remaining_letters)
+        if guess in remaining_letters:
+            remaining_letters.pop(remaining_letters.index(guess))
         get_guessed_word(secret_word, letters_guessed, guess)
         if is_guess_in_word(guess, secret_word) == True:
-            print(f"Your guess [ {guess} ] was correct!")
+            print(f"Your guess [ {guess} ] was \33[32mcorrect\33[0m!")
         else:
             incorrect_guesses += 1
-            print(f"Your guess [ {guess} ] was not correct!  You have {max_incorrect_guesses - incorrect_guesses} incorrect remaining.")
+            print(f"Your guess [ {guess} ] was \33[31mnot correct\33[0m!  You have {max_incorrect_guesses - incorrect_guesses} incorrect remaining.")
         if is_word_guessed(secret_word, letters_guessed) == True:
             print(f"You've guessed the word!  It was '{secret_word}'!")
             break
     if incorrect_guesses == max_incorrect_guesses:
-        print(f"Sorry, you've made {max_incorrect_guesses} incorrect guesses and the game is over.  The secret word was {secret_word}")
+        print(f"Sorry, you've made {max_incorrect_guesses} incorrect guesses and the game is over.  The secret word was '{secret_word}'")
             
 
     #TODO: show the player information about the game according to the project spec
@@ -157,7 +168,7 @@ def test():
 
 #-------------------------------------------
 
-# These function calls that will start the game
+# Preamble text with rules
 
 print("""
 Welcome to my Spaceman game!
@@ -168,6 +179,8 @@ The system will choose a random secret word from a dictionary. The player will s
 
 Good luck!
 """)
+
+# These function calls that will start and loop the game until the player is done
 
 play_again = True
 while play_again == True:
