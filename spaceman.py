@@ -81,10 +81,10 @@ def difficulty():
     max_incorrect_guesses = 7
     print("""
 Please choose a difficulty level (1 - 4):
-1 - \33[32mEasy\33[0m - 7 maximum incorrect guesses
-2 - \033[36mNormal\33[0m - 5 maximum incorrect guesses
-3 - \33[33mHard\33[0m - 4 maximum incorrect guesses
-4 - \33[31mNIGHTMARE\33[0m - 3 maximum incorrect guesses
+1 - \33[32mEasy\33[0m - 7 incorrect guesses maximum
+2 - \033[36mNormal\33[0m - 5 incorrect guesses maximum
+3 - \33[33mHard\33[0m - 4 incorrect guesses maximum
+4 - \33[31mNIGHTMARE\33[0m - 3 incorrect guesses maximum
 """)
     while difficulty_check == False:
         difficulty = input("Enter your difficulty choice > ")
@@ -111,6 +111,39 @@ Please choose a difficulty level (1 - 4):
                 break
     print()       
     return max_incorrect_guesses
+
+def score_change(max_incorrect_guesses, total_score, secret_word, letters_guessed):
+    match max_incorrect_guesses:
+        case 7:
+            if is_word_guessed(secret_word, letters_guessed) == True:
+                total_score[0] += 1
+            else: total_score[1] += 1
+        case 5:
+            if is_word_guessed(secret_word, letters_guessed) == True:
+                total_score[2] += 1
+            else: total_score[3] += 1            
+        case 4:
+            if is_word_guessed(secret_word, letters_guessed) == True:
+                total_score[4] += 1
+            else: total_score[5] += 1            
+        case 3:
+            if is_word_guessed(secret_word, letters_guessed) == True:
+                total_score[6] += 1
+            else: total_score[7] += 1
+
+def scoreboard(total_score):
+    print()
+    print("Thanks for playing!")
+    print()
+    print("Your final score for this session was:")
+    if total_score[0] != 0 or total_score[1] != 0:
+        print(f"\33[32mEasy\33[0m difficulty - \33[32m{total_score[0]} wins\33[32m, \33[31m{total_score[1]} losses")
+    if total_score[2] != 0 or total_score[3] != 0:
+        print(f"\033[36mNormal\33[0m difficulty - \33[32m{total_score[2]} wins\33[32m, \33[31m{total_score[3]} losses")
+    if total_score[4] != 0 or total_score[5] != 0:
+        print(f"\33[33mHard\33[0m difficulty - \33[32m{total_score[4]} wins\33[32m, \33[31m{total_score[5]} losses")
+    if total_score[6] != 0 or total_score[7] != 0:
+        print(f"\33[31mNIGHTMARE\33[0m difficulty: - \33[32m{total_score[6]} wins\33[32m, \33[31m{total_score[7]} losses")
 
 def spaceman(secret_word, total_score):
 
@@ -148,7 +181,7 @@ def spaceman(secret_word, total_score):
                 print()
                 print(f"\33[32mYou've guessed the secret word!\33[0m The secret word was '\33[32m{secret_word}\33[0m'!")
                 print()
-                total_score[0] += 1
+                score_change(max_incorrect_guesses, total_score, secret_word, letters_guessed)
                 break
         else:
             incorrect_guesses += 1
@@ -156,7 +189,7 @@ def spaceman(secret_word, total_score):
                 print()
                 print(f"Sorry, you've made \33[31m{max_incorrect_guesses} incorrect guesses and the game is over\33[0m.  The secret word was '\33[31m{secret_word}\33[0m'")
                 print()
-                total_score[1] += 1
+                score_change(max_incorrect_guesses, total_score, secret_word, letters_guessed)
             else:
                 print(f"Your guess [ {guess} ] was \33[31mnot correct\33[0m!  You have {max_incorrect_guesses - incorrect_guesses} incorrect guesses remaining.")
     return total_score
@@ -180,17 +213,16 @@ system('clear')
 
 # Preamble text with rules
 
-print("""
-Welcome to my Spaceman game!
+print("""Welcome to my Spaceman game!
 
 Rules:
 
-The system will choose a random secret word from a dictionary. The player will select a letter to guess from the secret word until the whole word has been revealed, or the player has 7 incorrect guesses.
+The system will choose a random secret word from a dictionary. The player will select a letter to guess from the secret word until the whole word has been revealed, or the player has reached their maximum incorrect guesses.
 
 Good luck!""")
 
 play_again = True
-total_score = [0, 0]
+total_score = [0, 0, 0, 0, 0, 0, 0, 0]
 
 # These function calls that will start and loop the game until the player is done
 
@@ -205,9 +237,7 @@ while play_again == True:
         play_again = True
     else:
         play_again = False
-print()
-print(f"Thanks for playing! Your final score was \33[32m{total_score[0]} wins\33[0m and \33[31m{total_score[1]} losses\33[0m.")
-print()
+scoreboard(total_score)
 
 
 
