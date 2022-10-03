@@ -119,20 +119,20 @@ def score_change(max_incorrect_guesses, total_score, secret_word, letters_guesse
     match max_incorrect_guesses:
         case 7:
             if is_word_guessed(secret_word, letters_guessed) == True:
-                total_score[0] += 1
-            else: total_score[1] += 1
+                total_score['easy_w'] += 1
+            else: total_score['easy_l'] += 1
         case 5:
             if is_word_guessed(secret_word, letters_guessed) == True:
-                total_score[2] += 1
-            else: total_score[3] += 1            
+                total_score['normal_w'] += 1
+            else: total_score['normal_l'] += 1            
         case 4:
             if is_word_guessed(secret_word, letters_guessed) == True:
-                total_score[4] += 1
-            else: total_score[5] += 1            
+                total_score['hard_w'] += 1
+            else: total_score['hard_l'] += 1            
         case 3:
             if is_word_guessed(secret_word, letters_guessed) == True:
-                total_score[6] += 1
-            else: total_score[7] += 1
+                total_score['nightmare_w'] += 1
+            else: total_score['nightmare_l'] += 1
 
 def scoreboard(total_score):
 
@@ -142,14 +142,14 @@ def scoreboard(total_score):
     print("Thanks for playing!")
     print()
     print("Your final score for this session was:")
-    if total_score[0] != 0 or total_score[1] != 0:
-        print(f"\33[32mEasy\33[0m difficulty - \33[32m{total_score[0]} wins\33[32m, \33[31m{total_score[1]} losses")
-    if total_score[2] != 0 or total_score[3] != 0:
-        print(f"\033[36mNormal\33[0m difficulty - \33[32m{total_score[2]} wins\33[32m, \33[31m{total_score[3]} losses")
-    if total_score[4] != 0 or total_score[5] != 0:
-        print(f"\33[33mHard\33[0m difficulty - \33[32m{total_score[4]} wins\33[32m, \33[31m{total_score[5]} losses")
-    if total_score[6] != 0 or total_score[7] != 0:
-        print(f"\33[31mNIGHTMARE\33[0m difficulty: - \33[32m{total_score[6]} wins\33[32m, \33[31m{total_score[7]} losses")
+    if total_score['easy_w'] != 0 or total_score['easy_l'] != 0:
+        print(f"\33[32mEasy\33[0m difficulty - \33[32m{total_score['easy_w']} wins\33[32m, \33[31m{total_score['easy_l']} losses")
+    if total_score['normal_w'] != 0 or total_score['normal_l'] != 0:
+        print(f"\033[36mNormal\33[0m difficulty - \33[32m{total_score['normal_w']} wins\33[32m, \33[31m{total_score['normal_l']} losses")
+    if total_score['hard_w'] != 0 or total_score['hard_l'] != 0:
+        print(f"\33[33mHard\33[0m difficulty - \33[32m{total_score['hard_w']} wins\33[32m, \33[31m{total_score['hard_l']} losses")
+    if total_score['nightmare_w'] != 0 or total_score['nightmare_l'] != 0:
+        print(f"\33[31mNIGHTMARE\33[0m difficulty: - \33[32m{total_score['nightmare_w']} wins\33[32m, \33[31m{total_score['nightmare_l']} losses")
 
 def spaceman(secret_word, total_score):
 
@@ -230,7 +230,16 @@ Good luck!""")
 # Total_score holds an array of scores for each difficulty
 
 play_again = True
-total_score = [0, 0, 0, 0, 0, 0, 0, 0]
+total_score = {
+    'easy_w': 0,
+    'easy_l': 0,
+    'normal_w': 0,
+    'normal_l': 0,
+    'hard_w': 0,
+    'hard_l': 0,
+    'nightmare_w': 0,
+    'nightmare_l': 0,
+}
 
 # These function calls that will start and loop the game until the player is done
 
