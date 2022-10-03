@@ -113,6 +113,9 @@ Please choose a difficulty level (1 - 4):
     return max_incorrect_guesses
 
 def score_change(max_incorrect_guesses, total_score, secret_word, letters_guessed):
+
+# A function to deal with scoring across multiple difficulties
+
     match max_incorrect_guesses:
         case 7:
             if is_word_guessed(secret_word, letters_guessed) == True:
@@ -132,6 +135,9 @@ def score_change(max_incorrect_guesses, total_score, secret_word, letters_guesse
             else: total_score[7] += 1
 
 def scoreboard(total_score):
+
+# A function to print w/l stats based on difficulties played
+
     print()
     print("Thanks for playing!")
     print()
@@ -156,7 +162,7 @@ def spaceman(secret_word, total_score):
     letters_guessed = []
     remaining_letters = []
 
-    #total score index 0 = wins, index 1 = losses
+    #this was faster than typing the alphabet as an array that I can .pop from
     alphabet = 'abcdefghijklmnopqrstuvwxyz'
     for letter in alphabet:
         remaining_letters.append(letter)
@@ -220,6 +226,8 @@ Rules:
 The system will choose a random secret word from a dictionary. The player will select a letter to guess from the secret word until the whole word has been revealed, or the player has reached their maximum incorrect guesses.
 
 Good luck!""")
+
+# Total_score holds an array of scores for each difficulty
 
 play_again = True
 total_score = [0, 0, 0, 0, 0, 0, 0, 0]
